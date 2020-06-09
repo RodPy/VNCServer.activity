@@ -26,6 +26,10 @@ import platform
 from threading import Thread
 
 from gettext import gettext as _
+import gi
+
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 from sugar3.activity import activity
 from sugar3.graphics.radiotoolbutton import RadioToolButton
