@@ -27,12 +27,12 @@ from threading import Thread
 
 from gettext import gettext as _
 
-from sugar.activity import activity
-from sugar.graphics.radiotoolbutton import RadioToolButton
-from sugar.graphics.toolbutton import ToolButton
-from sugar.graphics.toolbarbox import ToolbarBox
-from sugar.activity.widgets import StopButton
-from sugar.activity.widgets import ActivityToolbarButton
+from sugar3.activity import activity
+from sugar3.graphics.radiotoolbutton import RadioToolButton
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.activity.widgets import StopButton
+from sugar3.activity.widgets import ActivityToolbarButton
 
 
 class VncLauncherActivity(activity.Activity):
@@ -58,21 +58,21 @@ class VncLauncherActivity(activity.Activity):
                                        tooltip=_("Get the current IP"))
 
         ##
-        self.messages = gtk.TreeView()
+        self.messages = Gtk.TreeView()
         self.messages.set_rules_hint(True)
-        modelo = gtk.ListStore(str, str, gtk.gdk.Color)
+        modelo = Gtk.ListStore(str, str, Gtk.gdk.Color)
         self.messages.set_model(modelo)
-        render = gtk.CellRendererText()
-        render1 = gtk.CellRendererText()
+        render = Gtk.CellRendererText()
+        render1 = Gtk.CellRendererText()
 
-        column1 = gtk.TreeViewColumn(_("Hour"), render, markup=0)
-        column2 = gtk.TreeViewColumn(_("Message"), render1, markup=1)
+        column1 = Gtk.TreeViewColumn(_("Hour"), render, markup=0)
+        column2 = Gtk.TreeViewColumn(_("Message"), render1, markup=1)
         column1.add_attribute(render, 'foreground-gdk', 2)
         column2.add_attribute(render1, 'foreground-gdk', 2)
 
         self.messages.append_column(column1)
         self.messages.append_column(column2)
-        color = gtk.gdk.color_parse("dark blue")
+        color = Gtk.gdk.color_parse("dark blue")
         modelo.insert(0, [time.strftime("\n<b>%H:%M:%S</b>\n"),
             _("\n<b>Start of activity.</b>\n"), color])
 
@@ -90,25 +90,25 @@ class VncLauncherActivity(activity.Activity):
 
         self.__get_x11vnc_path()
         ##
-        separator = gtk.SeparatorToolItem()
+        separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
         separator.set_expand(True)
 
         self.stop_activity = StopButton(self)
 
         self.toolbar.insert(ActivityToolbarButton(self), -1)
-        self.toolbar.insert(gtk.SeparatorToolItem(), -1)
+        self.toolbar.insert(Gtk.SeparatorToolItem(), -1)
         self.toolbar.insert(self.start_vnc, -1)
         self.toolbar.insert(self.stop_vnc, -1)
-        self.toolbar.insert(gtk.SeparatorToolItem(), -1)
+        self.toolbar.insert(Gtk.SeparatorToolItem(), -1)
         self.toolbar.insert(self.get_ipbutton, -1)
         self.toolbar.insert(self.clear_model, -1)
         self.toolbar.insert(separator, -1)
         self.toolbar.insert(self.stop_activity, -1)
 
-        self.messages_scroll = gtk.ScrolledWindow()
-        self.messages_scroll.set_policy(gtk.POLICY_AUTOMATIC,
-            gtk.POLICY_AUTOMATIC)
+        self.messages_scroll = Gtk.ScrolledWindow()
+        self.messages_scroll.set_policy(Gtk.POLICY_AUTOMATIC,
+            Gtk.POLICY_AUTOMATIC)
         self.messages_scroll.add_with_viewport(self.messages)
 
         self.set_toolbar_box(self.toolbarbox)
@@ -125,7 +125,7 @@ class VncLauncherActivity(activity.Activity):
             self.start_vnc.set_active(False)
             self.showed_message_start = False
 
-            color = gtk.gdk.color_parse("dark red")
+            color = Gtk.gdk.color_parse("dark red")
             self.messages.get_model().insert(self.last_message,
                 [time.strftime("\n<b>%H:%M:%S</b>\n"),
                     ("\n<b>It has stopped unexpectedly the server..</b>\n"),
@@ -136,7 +136,7 @@ class VncLauncherActivity(activity.Activity):
 
     def __get_x11vnc_path(self):
         system = platform.machine()
-        color = gtk.gdk.color_parse("dark red")
+        color = Gtk.gdk.color_parse("dark red")
         if os.path.exists("/usr/bin/x11vnc"):
             self.path = "/usr/bin/x11vnc"
             message = _("PATH: %s") % self.path
@@ -173,7 +173,7 @@ class VncLauncherActivity(activity.Activity):
 
         self.showed_message_stop = False
         self.isrunning = True
-        color = gtk.gdk.color_parse("green")
+        color = Gtk.gdk.color_parse("green")
         self.messages.get_model().insert(self.last_message,
             [time.strftime("\n<b>%H:%M:%S</b>\n"),
                 ("\n<b>VNC server is started</b>\n"), color])
@@ -189,7 +189,7 @@ class VncLauncherActivity(activity.Activity):
 
         self.showed_message_start = False
         self.pid_nuevo = commands.getoutput("pidof x11vnc")
-        color = gtk.gdk.color_parse('red')
+        color = Gtk.gdk.color_parse('red')
 
         os.system("kill " + self.pid_nuevo)
 
@@ -232,7 +232,7 @@ class VncLauncherActivity(activity.Activity):
             ip = ip.replace("addr", "")
             ip = ip.replace(" ", "")
             mensaje = "IP: " + ip
-        color = gtk.gdk.color_parse("dark blue")
+        color = Gtk.gdk.color_parse("dark blue")
         self.messages.get_model().insert(self.last_message,
             [time.strftime("\n<b>%H:%M:%S</b>\n"),
                 "\n<b>" + mensaje + "</b>\n", color])
