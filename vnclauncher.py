@@ -25,7 +25,7 @@ gi.require_version('Gtk', '3.0')
 
 import time 
 import os
-import commands
+import subprocess
 import platform
 
 from threading import Thread
@@ -121,7 +121,7 @@ class VncLauncherActivity(activity.Activity):
         Gobject.timeout_add(100, self.__check_is_on)
 
     def __check_is_on(self):
-        pid = commands.getoutput("pidof x11vnc")
+        pid = subprocess.getoutput("pidof x11vnc")
         if self.start_vnc.get_active() and pid == "" and self.isrunning:
             self.showed_message_stop = True
             self.stop_vnc.set_active(True)
@@ -165,7 +165,7 @@ class VncLauncherActivity(activity.Activity):
     def __start_vnc(self, widget):
 
         def servidor():
-            commands.getoutput(self.path)
+            subprocess.getoutput(self.path)
         Thread(target=servidor).start()
 
         if not self.showed_message_start:
@@ -191,7 +191,7 @@ class VncLauncherActivity(activity.Activity):
             return
 
         self.showed_message_start = False
-        self.pid_nuevo = commands.getoutput("pidof x11vnc")
+        self.pid_nuevo = subprocess.getoutput("pidof x11vnc")
         color = Gdk.color_parse('red')
 
         os.system("kill " + self.pid_nuevo)
@@ -204,7 +204,7 @@ class VncLauncherActivity(activity.Activity):
 
     def close(self):
         self.isrunning = False
-        pid = commands.getoutput("pidof x11vnc")
+        pid = subprocess.getoutput("pidof x11vnc")
         os.system("kill " + pid)
         self.destroy()
 
@@ -217,7 +217,7 @@ class VncLauncherActivity(activity.Activity):
 
         ifconfig = "/sbin/ifconfig"
         cmd = "%s %s" % (ifconfig, target)
-        output = commands.getoutput(cmd)
+        output = subprocess.getoutput(cmd)
         error = _("No wireless connection.")
         ip = error
         inet = output.find('inet')
