@@ -118,7 +118,7 @@ class VncLauncherActivity(activity.Activity):
         self.set_canvas(self.messages_scroll)
 
         self.show_all()
-        Gobject.timeout_add(100, self.__check_is_on)
+        GObject.timeout_add(100, self.__check_is_on)
 
     def __check_is_on(self):
         pid = subprocess.getoutput("pidof x11vnc")
