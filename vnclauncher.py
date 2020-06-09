@@ -25,7 +25,7 @@ gi.require_version('Gtk', '3.0')
 
 import time 
 import os
-## import commands
+import commands
 import platform
 
 from threading import Thread
@@ -110,8 +110,8 @@ class VncLauncherActivity(activity.Activity):
         self.toolbar.insert(self.stop_activity, -1)
 
         self.messages_scroll = Gtk.ScrolledWindow()
-        self.messages_scroll.set_policy(Gtk.POLICY_AUTOMATIC,
-            Gtk.POLICY_AUTOMATIC)
+        self.messages_scroll.set_policy(Gtk.PolicyType.AUTOMATIC,
+            Gtk.PolicyType.AUTOMATIC)
         self.messages_scroll.add_with_viewport(self.messages)
 
         self.set_toolbar_box(self.toolbarbox)
