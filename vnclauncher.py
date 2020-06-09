@@ -19,19 +19,17 @@
 
 
 import gi
+from gi.repository import Gtk, GObject,Gdk
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gobject,Gdk
-
 
 import time 
 import os
-import commands
+## import commands
 import platform
+
 from threading import Thread
-
 from gettext import gettext as _
-
 from sugar3.activity import activity
 from sugar3.graphics.radiotoolbutton import RadioToolButton
 from sugar3.graphics.toolbutton import ToolButton
@@ -65,7 +63,7 @@ class VncLauncherActivity(activity.Activity):
         ##
         self.messages = Gtk.TreeView()
         self.messages.set_rules_hint(True)
-        modelo = Gtk.ListStore(str, str, Gtk.Gdk.Color)
+        modelo = Gtk.ListStore(str, str, Gdk.Color)
         self.messages.set_model(modelo)
         render = Gtk.CellRendererText()
         render1 = Gtk.CellRendererText()
@@ -77,7 +75,7 @@ class VncLauncherActivity(activity.Activity):
 
         self.messages.append_column(column1)
         self.messages.append_column(column2)
-        color = Gtk.Gdk.color_parse("dark blue")
+        color = Gdk.color_parse("dark blue")
         modelo.insert(0, [time.strftime("\n<b>%H:%M:%S</b>\n"),
             _("\n<b>Start of activity.</b>\n"), color])
 
@@ -130,7 +128,7 @@ class VncLauncherActivity(activity.Activity):
             self.start_vnc.set_active(False)
             self.showed_message_start = False
 
-            color = Gtk.Gdk.color_parse("dark red")
+            color = Gdk.color_parse("dark red")
             self.messages.get_model().insert(self.last_message,
                 [time.strftime("\n<b>%H:%M:%S</b>\n"),
                     ("\n<b>It has stopped unexpectedly the server..</b>\n"),
@@ -141,7 +139,7 @@ class VncLauncherActivity(activity.Activity):
 
     def __get_x11vnc_path(self):
         system = platform.machine()
-        color = Gtk.Gdk.color_parse("dark red")
+        color = Gdk.color_parse("dark red")
         if os.path.exists("/usr/bin/x11vnc"):
             self.path = "/usr/bin/x11vnc"
             message = _("PATH: %s") % self.path
@@ -178,7 +176,7 @@ class VncLauncherActivity(activity.Activity):
 
         self.showed_message_stop = False
         self.isrunning = True
-        color = Gtk.Gdk.color_parse("green")
+        color = Gdk.color_parse("green")
         self.messages.get_model().insert(self.last_message,
             [time.strftime("\n<b>%H:%M:%S</b>\n"),
                 ("\n<b>VNC server is started</b>\n"), color])
@@ -194,7 +192,7 @@ class VncLauncherActivity(activity.Activity):
 
         self.showed_message_start = False
         self.pid_nuevo = commands.getoutput("pidof x11vnc")
-        color = Gtk.Gdk.color_parse('red')
+        color = Gdk.color_parse('red')
 
         os.system("kill " + self.pid_nuevo)
 
@@ -237,7 +235,7 @@ class VncLauncherActivity(activity.Activity):
             ip = ip.replace("addr", "")
             ip = ip.replace(" ", "")
             mensaje = "IP: " + ip
-        color = Gtk.Gdk.color_parse("dark blue")
+        color = Gdk.color_parse("dark blue")
         self.messages.get_model().insert(self.last_message,
             [time.strftime("\n<b>%H:%M:%S</b>\n"),
                 "\n<b>" + mensaje + "</b>\n", color])
